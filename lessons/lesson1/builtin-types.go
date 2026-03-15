@@ -79,4 +79,17 @@ func main() {
 	// float64	8	8
 	// string	16	8
 	// slice	24	8
+
+	// slice
+	// uintptr (8), len (8), cap (8)
+
+	// Литерал
+	s := []int{1, 2, 3}
+	// make — длина и ёмкость
+	s = make([]int, 5)     // len=5, cap=5
+	s = make([]int, 3, 10) // len=3, cap=10
+	// Срез из массива
+	arr := [5]int{1, 2, 3, 4, 5}
+	s = arr[1:4] // [2, 3, 4], len=3, cap=4
+	fmt.Println(s)
 }
