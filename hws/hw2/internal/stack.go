@@ -1,33 +1,45 @@
 package internal
 
-type Stack struct {
-	elements []interface{}
-	top      int
+import "errors"
+
+var (
+	ErrStackEmpty = errors.New("stack is empty")
+)
+
+type Stack[T any] struct {
+	node *Node[T]
+	size int
 }
 
-func NewStack() *Stack {
-	return &Stack{
-		elements: make([]interface{}, 0),
-		top:      -1,
+func NewStack[T any]() *Stack[T] {
+	return &Stack[T]{
+		node: nil,
+		size: 0,
 	}
 }
 
-func (s *Stack) Push(element interface{}) {
-	s.elements = append(s.elements, element)
-	s.top++
-}
-
-func (s *Stack) Pop() interface{} {
-	if s.top < 0 {
-		return nil
+func (s *Stack[T]) Push(data *T) {
+	item := NewNode(data, s.node, nil)
+	if s.node != nil {
+		s.node.prev = item
 	}
-
-	element := s.elements[s.top]
-	s.elements = s.elements[:s.top]
-	s.top--
-	return element
+	s.node = item
+	s.size++
 }
 
-func (s *Stack) IsEmpty() bool {
-	return s.top == -1
+func (s *Stack[T]) Pop() (*T, error) {
+	if s.size == 0 {
+		return nil, ErrStackEmpty
+	}
+	data := s.node.data
+	s.node = s.node.next
+	if s.node != nil {
+		s.node.prev = nil
+	}
+	s.size--
+	return data, nil
+}
+
+func (s *Stack[T]) IsEmpty() bool {
+	return s.size == 0
 }

@@ -1,4 +1,4 @@
-module hw2
+module lesson1
 
 go 1.26.1
 

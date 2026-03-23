@@ -1,25 +1,55 @@
 package internal
 
-type Queue struct {
-	elements []interface{}
+import "errors"
+
+var (
+	ErrQueueEmpty = errors.New("queue is empty")
+)
+
+type Queue[T any] struct {
+	head *Node[T]
+	tail *Node[T]
+	size int
 }
 
-func NewQueue() *Queue {
-	return &Queue{
-		elements: make([]interface{}, 0),
+func NewQueue[T any]() *Queue[T] {
+	return &Queue[T]{
+		head: nil,
+		tail: nil,
+		size: 0,
 	}
 }
 
-func (q *Queue) Enqueue(v interface{}) {
-	q.elements = append(q.elements, v)
-}
-
-func (q *Queue) Dequeue() interface{} {
-	if len(q.elements) == 0 {
-		return nil
+func (q *Queue[T]) Enqueue(data *T) {
+	item := NewNode(data, nil, nil)
+	if q.size == 0 {
+		q.head = item
+		q.tail = item
+	} else {
+		q.tail.prev = item
+		item.next = q.tail
+		q.tail = item
 	}
 
-	v := q.elements[0]
-	q.elements = q.elements[1:]
-	return v
+	q.size++
+}
+
+func (q *Queue[T]) Dequeue() (*T, error) {
+	if q.size == 0 {
+		return nil, ErrQueueEmpty
+	}
+
+	data := q.head.data
+	q.head = q.head.prev
+	if q.head != nil {
+		q.head.next = nil
+	} else {
+		q.tail = nil
+	}
+	q.size--
+	return data, nil
+}
+
+func (q *Queue[T]) IsEmpty() bool {
+	return q.size == 0
 }

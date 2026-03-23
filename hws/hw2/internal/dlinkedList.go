@@ -1,32 +1,20 @@
 package internal
 
-type DLinkedList struct {
-	head *Node
-	tail *Node
+type DLinkedList[T any] struct {
+	head *Node[T]
+	tail *Node[T]
 	size int
 }
 
-type Node struct {
-	data interface{}
-	next *Node
-	prev *Node
-}
-
-func NewDLinkedList() *DLinkedList {
-	return &DLinkedList{
+func NewDLinkedList[T any]() *DLinkedList[T] {
+	return &DLinkedList[T]{
 		head: nil,
 		tail: nil,
 		size: 0,
 	}
 }
 
-// нельзя делать функции с одним названием и разным набором параметров
-// нельзя использовать дефолтные значения для аргументов
-func NewNode(data interface{}, n *Node, p *Node) *Node {
-	return &Node{data: data, next: n, prev: p}
-}
-
-func (d *DLinkedList) AddBegin(data interface{}) {
+func (d *DLinkedList[T]) AddBegin(data *T) {
 	if d.size == 0 {
 		d.head = NewNode(data, nil, nil)
 		d.tail = d.head
@@ -39,7 +27,7 @@ func (d *DLinkedList) AddBegin(data interface{}) {
 	}
 }
 
-func (d *DLinkedList) AddEnd(data interface{}) {
+func (d *DLinkedList[T]) AddEnd(data *T) {
 	if d.size == 0 {
 		d.head = NewNode(data, nil, nil)
 		d.tail = d.head
@@ -52,7 +40,7 @@ func (d *DLinkedList) AddEnd(data interface{}) {
 	}
 }
 
-func (d *DLinkedList) RemoveBegin(data interface{}) *Node {
+func (d *DLinkedList[T]) RemoveBegin(data *T) *Node[T] {
 	if d.size == 0 {
 		return nil
 	}
@@ -65,7 +53,7 @@ func (d *DLinkedList) RemoveBegin(data interface{}) *Node {
 	return node
 }
 
-func (d *DLinkedList) RemoveEnd(data interface{}) *Node {
+func (d *DLinkedList[T]) RemoveEnd(data *T) *Node[T] {
 	if d.size == 0 {
 		return nil
 	}
