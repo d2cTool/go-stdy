@@ -75,7 +75,11 @@ func (c *LruCache[K, V]) Format(f fmt.State, verb rune) {
 		sep := ""
 		for el := c.ll.Front(); el != nil; el = el.Next() {
 			ent := el.Value.(LruCacheEntry[K, V])
-			fmt.Fprintf(f, "%s%v:%v", sep, ent.k, ent.v)
+			if ent.v == nil {
+				fmt.Fprintf(f, "%s%v:<nil>", sep, ent.k)
+			} else {
+				fmt.Fprintf(f, "%s%v:%v", sep, ent.k, *ent.v)
+			}
 			sep = ", "
 		}
 		io.WriteString(f, "}")
