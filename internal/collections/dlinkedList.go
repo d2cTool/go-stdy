@@ -14,33 +14,35 @@ func NewDLinkedList[T any]() *DLinkedList[T] {
 	}
 }
 
-func (d *DLinkedList[T]) AddBegin(data *T) {
+func (d *DLinkedList[T]) AddBegin(data T) {
 	if d.size == 0 {
-		d.head = NewNode(data, nil, nil)
+		d.head = NewNode(data)
 		d.tail = d.head
 		d.size = 1
 	} else {
-		node := NewNode(data, d.head, nil)
+		node := NewNode(data)
+		node.next = d.head
 		d.head.prev = node
 		d.head = node
 		d.size++
 	}
 }
 
-func (d *DLinkedList[T]) AddEnd(data *T) {
+func (d *DLinkedList[T]) AddEnd(data T) {
 	if d.size == 0 {
-		d.head = NewNode(data, nil, nil)
+		d.head = NewNode(data)
 		d.tail = d.head
 		d.size = 1
 	} else {
-		node := NewNode(data, nil, d.head)
+		node := NewNode(data)
+		node.prev = d.head
 		d.tail.next = node
 		d.tail = node
 		d.size++
 	}
 }
 
-func (d *DLinkedList[T]) RemoveBegin(data *T) *Node[T] {
+func (d *DLinkedList[T]) RemoveBegin() *Node[T] {
 	if d.size == 0 {
 		return nil
 	}
@@ -53,7 +55,7 @@ func (d *DLinkedList[T]) RemoveBegin(data *T) *Node[T] {
 	return node
 }
 
-func (d *DLinkedList[T]) RemoveEnd(data *T) *Node[T] {
+func (d *DLinkedList[T]) RemoveEnd() *Node[T] {
 	if d.size == 0 {
 		return nil
 	}

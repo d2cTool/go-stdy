@@ -18,8 +18,9 @@ func NewStack[T any]() *Stack[T] {
 	}
 }
 
-func (s *Stack[T]) Push(data *T) {
-	item := NewNode(data, s.node, nil)
+func (s *Stack[T]) Push(data T) {
+	item := NewNode(data)
+	item.next = s.node
 	if s.node != nil {
 		s.node.prev = item
 	}
@@ -27,9 +28,10 @@ func (s *Stack[T]) Push(data *T) {
 	s.size++
 }
 
-func (s *Stack[T]) Pop() (*T, error) {
+func (s *Stack[T]) Pop() (T, error) {
 	if s.size == 0 {
-		return nil, ErrStackEmpty
+		var zero T
+		return zero, ErrStackEmpty
 	}
 	data := s.node.data
 	s.node = s.node.next

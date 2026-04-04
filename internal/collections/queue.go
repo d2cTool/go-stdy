@@ -20,8 +20,8 @@ func NewQueue[T any]() *Queue[T] {
 	}
 }
 
-func (q *Queue[T]) Enqueue(data *T) {
-	item := NewNode(data, nil, nil)
+func (q *Queue[T]) Enqueue(data T) {
+	item := NewNode(data)
 	if q.size == 0 {
 		q.head = item
 		q.tail = item
@@ -34,9 +34,10 @@ func (q *Queue[T]) Enqueue(data *T) {
 	q.size++
 }
 
-func (q *Queue[T]) Dequeue() (*T, error) {
+func (q *Queue[T]) Dequeue() (T, error) {
 	if q.size == 0 {
-		return nil, ErrQueueEmpty
+		var zero T
+		return zero, ErrQueueEmpty
 	}
 
 	data := q.head.data

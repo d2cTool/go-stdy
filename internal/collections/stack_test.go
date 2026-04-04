@@ -18,25 +18,22 @@ func TestStack_IsEmpty(t *testing.T) {
 func TestStack_PushPop(t *testing.T) {
 	s := NewStack[int]()
 	a, b, c := 1, 2, 3
-	s.Push(&a)
-	s.Push(&b)
-	s.Push(&c)
+	s.Push(a)
+	s.Push(b)
+	s.Push(c)
 	assert.False(t, s.IsEmpty())
 
 	v, err := s.Pop()
 	require.NoError(t, err)
-	require.NotNil(t, v)
-	assert.Equal(t, 3, *v)
+	assert.Equal(t, 3, v)
 
 	v, err = s.Pop()
 	require.NoError(t, err)
-	require.NotNil(t, v)
-	assert.Equal(t, 2, *v)
+	assert.Equal(t, 2, v)
 
 	v, err = s.Pop()
 	require.NoError(t, err)
-	require.NotNil(t, v)
-	assert.Equal(t, 1, *v)
+	assert.Equal(t, 1, v)
 
 	assert.True(t, s.IsEmpty())
 }

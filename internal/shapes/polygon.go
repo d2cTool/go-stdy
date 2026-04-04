@@ -1,44 +1,12 @@
-package shape
+package shapes
 
 import "math"
-
-type Point struct {
-	x float64
-	y float64
-}
-
-func NewPoint(x, y float64) Point {
-	return Point{x: x, y: y}
-}
-
-type Circle struct {
-	point Point
-	r     float64
-}
 
 type Polygon struct {
 	Points []Point
 }
 
-func (p Point) Distance(point *Point) float64 {
-	dx := point.x - p.x
-	dy := point.y - p.y
-	return math.Sqrt(dx*dx + dy*dy)
-}
-
-func (p Point) InСircle(point *Point, r float64) bool {
-	return p.Distance(point) <= r
-}
-
-func (c Circle) Inside(p Point) bool {
-	return p.Distance(&c.point) <= c.r
-}
-
-func (c Circle) Area() float64 {
-	return math.Pi * c.r * c.r
-}
-
-func (polygon Polygon) Inside(p Point) bool {
+func (polygon Polygon) Inside(p *Point) bool {
 	n := len(polygon.Points)
 	if n < 3 {
 		return false

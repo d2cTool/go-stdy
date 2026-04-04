@@ -1,15 +1,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	shape "hw1/internal"
 	"strconv"
 	"strings"
 
-	"flag"
+	"go-stdy/internal/shapes"
 )
 
-type pointsFlag []shape.Point
+type pointsFlag []shapes.Point
 
 func (p *pointsFlag) Set(s string) error {
 	parts := strings.Split(s, ",")
@@ -24,7 +24,7 @@ func (p *pointsFlag) Set(s string) error {
 	if err != nil {
 		return err
 	}
-	*p = append(*p, shape.NewPoint(x, y))
+	*p = append(*p, shapes.NewPoint(x, y))
 	return nil
 }
 
@@ -34,9 +34,17 @@ func (p *pointsFlag) String() string {
 
 func main() {
 	var points pointsFlag
+	var radius float64
+
 	flag.Var(&points, "points", "Point in format x,y (can be repeated: --points 0,0 --points 1,1)")
+	flag.Float64Var(&radius, "radius", 0, "Circle in format --points 0,0 --radius 1)")
 	flag.Parse()
 
-	poly := shape.Polygon{Points: []shape.Point(points)}
-	fmt.Printf("Polygon area: %.2f\n", poly.Area())
+	if radius > 0 {
+		circle := shapes.Circle{Point: points[0], R: radius}
+		fmt.Printf("Circle area: %.2f\n", circle.Area())
+	} else {
+		poly := shapes.Polygon{Points: []shapes.Point(points)}
+		fmt.Printf("Polygon area: %.2f\n", poly.Area())
+	}
 }

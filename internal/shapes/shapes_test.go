@@ -1,8 +1,9 @@
-package shape
+package shapes
 
 import (
-	"math"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPolygonArea(t *testing.T) {
@@ -72,9 +73,7 @@ func TestPolygonArea(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			poly := Polygon{Points: tt.points}
 			got := poly.Area()
-			if math.Abs(got-tt.want) > eps {
-				t.Errorf("Area() = %v, want %v", got, tt.want)
-			}
+			assert.InDelta(t, tt.want, got, eps, "Area()")
 		})
 	}
 }
