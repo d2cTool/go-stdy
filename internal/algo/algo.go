@@ -10,7 +10,7 @@ func Reverse[T any](s []T) []T {
 func Deduplicate[T comparable](s []T) []T {
 	seen := make(map[T]struct{})
 	write := 0
-	for i := 0; i < len(s); i++ {
+	for i := range s {
 		if _, ok := seen[s[i]]; ok {
 			continue
 		}
@@ -25,10 +25,7 @@ func Deduplicate[T comparable](s []T) []T {
 func Chunk[T any](s []T, size int) [][]T {
 	res := make([][]T, 0, (len(s)+size-1)/size)
 	for i := 0; i < len(s); i += size {
-		end := i + size
-		if end > len(s) {
-			end = len(s)
-		}
+		end := min(i+size, len(s))
 		res = append(res, s[i:end])
 	}
 	return res
