@@ -15,7 +15,7 @@ func main() {
 	iter := flag.Int("iter", 1_000_000, "iterations")
 	flag.Parse()
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 	defer stop()
 
 	var res float64
