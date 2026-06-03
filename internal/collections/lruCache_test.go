@@ -33,7 +33,8 @@ func TestLruCache_GetMissing(t *testing.T) {
 	c, err := NewLruCache[string, int](2)
 	require.NoError(t, err)
 
-	assert.Nil(t, c.Get("nope"))
+	_, ok := c.Get("nope")
+	assert.False(t, ok)
 }
 
 func TestLruCache_SetGet(t *testing.T) {
@@ -45,7 +46,7 @@ func TestLruCache_SetGet(t *testing.T) {
 	x := 42
 	c.Set("k", &x)
 
-	got := c.Get("k")
+	got, _ := c.Get("k")
 	require.NotNil(t, got)
 	assert.Equal(t, 42, *got)
 }
@@ -61,11 +62,15 @@ func TestLruCache_EvictsLRU(t *testing.T) {
 	c.Set("b", &b)
 	c.Set("c", &cc)
 
-	assert.Nil(t, c.Get("a"))
-	require.NotNil(t, c.Get("b"))
-	require.NotNil(t, c.Get("c"))
-	assert.Equal(t, 2, *c.Get("b"))
-	assert.Equal(t, 3, *c.Get("c"))
+	va, _ := c.Get("a")
+	vb, _ := c.Get("b")
+	vc, _ := c.Get("c")
+
+	assert.Nil(t, va)
+	require.NotNil(t, vb)
+	require.NotNil(t, vc)
+	assert.Equal(t, 2, *vb)
+	assert.Equal(t, 3, *vc)
 }
 
 func TestLruCache_GetPromotes(t *testing.T) {
@@ -77,13 +82,17 @@ func TestLruCache_GetPromotes(t *testing.T) {
 	a, b, cc := 1, 2, 3
 	c.Set("a", &a)
 	c.Set("b", &b)
-	require.NotNil(t, c.Get("a"))
+	va, _ := c.Get("a")
+	require.NotNil(t, va)
 
 	c.Set("c", &cc)
 
-	assert.Nil(t, c.Get("b"))
-	require.NotNil(t, c.Get("a"))
-	require.NotNil(t, c.Get("c"))
+	va, _ = c.Get("a")
+	vb, _ := c.Get("b")
+	vc, _ := c.Get("c")
+	assert.Nil(t, vb)
+	require.NotNil(t, va)
+	require.NotNil(t, vc)
 }
 
 func TestLruCache_SetUpdatesExisting(t *testing.T) {
@@ -99,7 +108,7 @@ func TestLruCache_SetUpdatesExisting(t *testing.T) {
 	v1new := 99
 	c.Set("k", &v1new)
 
-	got := c.Get("k")
+	got, _ := c.Get("k")
 	require.NotNil(t, got)
 	assert.Equal(t, 99, *got)
 	assert.Len(t, c.items, 2)

@@ -7,10 +7,7 @@
       "request": "launch",
       "mode": "test",
       "program": "${workspaceFolder}",
-      "args": [
-        "-test.run",
-        "MyTestFunction"
-      ]
+      "args": ["-test.run", "MyTestFunction"]
     },
     {
       "name": "Launch Package",
@@ -32,6 +29,14 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/cmd/hw3"
+    },
+    {
+      "name": "Launch HW4 (Pi)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/cmd/hw4",
+      "args": ["n 2"]
     }
   ]
 }

@@ -35,13 +35,13 @@ func NewLruCache[K comparable, V any](cap int) (*LruCache[K, V], error) {
 	}, nil
 }
 
-func (c *LruCache[K, V]) Get(key K) *V {
+func (c *LruCache[K, V]) Get(key K) (val *V, ok bool) {
 	el, ok := c.items[key]
 	if !ok {
-		return nil
+		return nil, false
 	}
 	c.promote(el)
-	return el.Value.(LruCacheEntry[K, V]).v
+	return el.Value.(LruCacheEntry[K, V]).v, true
 }
 
 func (c *LruCache[K, V]) Set(key K, value *V) {

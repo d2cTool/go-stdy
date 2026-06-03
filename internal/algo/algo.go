@@ -31,28 +31,48 @@ func Chunk[T any](s []T, size int) [][]T {
 	return res
 }
 
-// func MaxSumWindow(s []int, k int) (sum int, start int) {
-
-// }
-
-/*
-
-// Разбить слайс на части фиксированного размера. Последний чанк может быть меньше.
-func Chunk[T any](s []T, size int) [][]T
-
-// Chunk([]int{1,2,3,4,5}, 2) → [[1,2], [3,4], [5]]
-
 // Скользящее окно (sliding window) Найти подпоследовательность заданной длины с максимальной суммой.
-func MaxSumWindow(s []int, k int) (sum int, start int)
+func MaxSumWindow(s []int, k int) (sum int, start int) {
+	maxSum := 0
+
+	for i := range s[:k] {
+		maxSum += s[i]
+	}
+
+	for i := k; i < len(s); i++ {
+		sum := maxSum - s[i-k] + s[i]
+		if sum > maxSum {
+			maxSum = sum
+			start = i - k + 1
+		}
+	}
+	return maxSum, start
+}
 
 // Merge двух отсортированных слайсов. Объединить два отсортированных слайса в один отсортированный за O(n).
-func MergeSorted(a, b []int) []int
+func MergeSorted(a, b []int) []int {
+	res := make([]int, 0, len(a)+len(b))
+	i, j := 0, 0
+	for i < len(a) && j < len(b) {
+		if a[i] < b[j] {
+			res = append(res, a[i])
+			i++
+		} else {
+			res = append(res, b[j])
+			j++
+		}
+	}
+	return res
+}
 
 // Сдвинуть элементы на k позиций вправо (или влево) без дополнительной памяти.
-func Rotate[T any](s []T, k int)
+func Rotate[T any](s []T, k int) {
+
+}
 
 // Rotate([]int{1,2,3,4,5}, 2) → [4,5,1,2,3]
 
+/*
 // Проверить, является ли один слайс подпоследовательностью другого (порядок сохраняется).
 func IsSubsequence(sub, full []int) bool
 
